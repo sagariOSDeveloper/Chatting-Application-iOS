@@ -12,7 +12,8 @@ class RegisterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .link
+        
         // Do any additional setup after loading the view.
     }
     
