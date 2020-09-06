@@ -32,6 +32,7 @@ class RegisterViewController: UIViewController {
     
     @objc private func changeProfilePic(){
         print("Change profile pic called")
+        presentPhotoActionSheet()
     }
     
     @objc func registerButtonTapped(){
@@ -73,13 +74,17 @@ class RegisterViewController: UIViewController {
     
     fileprivate func setupView(){
         view.addSubview(profilePic)
-        profilePic.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
+        profilePic.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 10).isActive = true
         profilePic.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profilePic.heightAnchor.constraint(equalTo: view.widthAnchor,multiplier: 0.25).isActive = true
+        profilePic.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        profilePic.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        profilePic.clipsToBounds = true
+        profilePic.layer.cornerRadius = 50
+        
         
         let emailField = getTextField(placeHolder: "Email Address...", secureEntry: false)
         view.addSubview(emailField)
-        emailField.topAnchor.constraint(equalTo: profilePic.bottomAnchor,constant: 50).isActive = true
+        emailField.topAnchor.constraint(equalTo: profilePic.bottomAnchor,constant: 40).isActive = true
         emailField.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 30).isActive = true
         emailField.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -30).isActive = true
         
@@ -176,16 +181,64 @@ class RegisterViewController: UIViewController {
     }()
     
     fileprivate lazy var profilePic: UIImageView = {
-        let i = UIImageView()
+        var i = UIImageView()
         i.translatesAutoresizingMaskIntoConstraints = false
         i.image = UIImage(systemName: "person")
         i.tintColor = .red
         i.isUserInteractionEnabled = true
         i.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeProfilePic)))
-        i.contentMode = .scaleAspectFill
+        i.contentMode = .scaleAspectFit
+        i.layer.masksToBounds = true
+        i.layer.borderWidth = 1
+        i.layer.borderColor = UIColor.red.cgColor
         return i
     }()
 }
+
+extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+   
+    func presentPhotoActionSheet(){
+        let actionSheet = UIAlertController(title: "Profile Picture", message: "How would you like to select a profile picture.", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
+            self?.presentCamera()
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { [weak self] _ in
+            self?.presentPhotoLibrary()
+        }))
+        present(actionSheet,animated: true)
+    }
+    
+    func presentCamera(){
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc,animated: true)
+    }
+    
+    func presentPhotoLibrary() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc,animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
+            return
+        }
+        self.profilePic.image = selectedImage
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
 
 
 extension RegisterViewController: UITextFieldDelegate {
