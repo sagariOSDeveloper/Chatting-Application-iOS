@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		131C4BEA25057919003F0066 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 131C4BE925057919003F0066 /* GoogleService-Info.plist */; };
 		134B7B2E2503CA980015DB74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B2D2503CA980015DB74 /* AppDelegate.swift */; };
 		134B7B302503CA980015DB74 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B2F2503CA980015DB74 /* SceneDelegate.swift */; };
 		134B7B322503CA980015DB74 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B312503CA980015DB74 /* ConversationsViewController.swift */; };
@@ -19,10 +20,13 @@
 		134B7B4E2503CDA90015DB74 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B4D2503CDA90015DB74 /* PhotoViewerViewController.swift */; };
 		134B7B502503CDB40015DB74 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B4F2503CDB40015DB74 /* VideoPlayerViewController.swift */; };
 		134B7B522503CDBD0015DB74 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */; };
+		AB0337537B90CF1D702E53C6 /* Pods_Chatting_Application.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 014E8178C86CDEB34FE73363 /* Pods_Chatting_Application.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		134B7B2A2503CA980015DB74 /* Chatting Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chatting Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		014E8178C86CDEB34FE73363 /* Pods_Chatting_Application.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatting_Application.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		131C4BE925057919003F0066 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		134B7B2A2503CA980015DB74 /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		134B7B2D2503CA980015DB74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		134B7B2F2503CA980015DB74 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		134B7B312503CA980015DB74 /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +40,8 @@
 		134B7B4D2503CDA90015DB74 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		134B7B4F2503CDB40015DB74 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
+		5BB14928315739C4BC022A38 /* Pods-Chatting Application.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatting Application.debug.xcconfig"; path = "Target Support Files/Pods-Chatting Application/Pods-Chatting Application.debug.xcconfig"; sourceTree = "<group>"; };
+		BDE1B43EB1D9B816E67C2CA7 /* Pods-Chatting Application.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatting Application.release.xcconfig"; path = "Target Support Files/Pods-Chatting Application/Pods-Chatting Application.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB0337537B90CF1D702E53C6 /* Pods_Chatting_Application.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,13 +61,15 @@
 			children = (
 				134B7B2C2503CA980015DB74 /* Chatting Application */,
 				134B7B2B2503CA980015DB74 /* Products */,
+				404488D4C3876A5556AE41E5 /* Pods */,
+				361C85C024B31A878ED733A2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		134B7B2B2503CA980015DB74 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				134B7B2A2503CA980015DB74 /* Chatting Application.app */,
+				134B7B2A2503CA980015DB74 /* Messenger.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,6 +77,7 @@
 		134B7B2C2503CA980015DB74 /* Chatting Application */ = {
 			isa = PBXGroup;
 			children = (
+				131C4BE925057919003F0066 /* GoogleService-Info.plist */,
 				134B7B452503CBA80015DB74 /* Resources */,
 				134B7B432503CB860015DB74 /* Views */,
 				134B7B422503CB7C0015DB74 /* ViewModels */,
@@ -133,6 +143,24 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		361C85C024B31A878ED733A2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				014E8178C86CDEB34FE73363 /* Pods_Chatting_Application.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		404488D4C3876A5556AE41E5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5BB14928315739C4BC022A38 /* Pods-Chatting Application.debug.xcconfig */,
+				BDE1B43EB1D9B816E67C2CA7 /* Pods-Chatting Application.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -140,9 +168,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 134B7B3E2503CA9B0015DB74 /* Build configuration list for PBXNativeTarget "Chatting Application" */;
 			buildPhases = (
+				2F2C83A01463B18D6108F828 /* [CP] Check Pods Manifest.lock */,
 				134B7B262503CA980015DB74 /* Sources */,
 				134B7B272503CA980015DB74 /* Frameworks */,
 				134B7B282503CA980015DB74 /* Resources */,
+				71A944C57E9E2010072CBB50 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -150,7 +180,7 @@
 			);
 			name = "Chatting Application";
 			productName = "Chatting Application";
-			productReference = 134B7B2A2503CA980015DB74 /* Chatting Application.app */;
+			productReference = 134B7B2A2503CA980015DB74 /* Messenger.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -192,12 +222,55 @@
 			buildActionMask = 2147483647;
 			files = (
 				134B7B3A2503CA9B0015DB74 /* LaunchScreen.storyboard in Resources */,
+				131C4BEA25057919003F0066 /* GoogleService-Info.plist in Resources */,
 				134B7B372503CA9B0015DB74 /* Assets.xcassets in Resources */,
 				134B7B352503CA980015DB74 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2F2C83A01463B18D6108F828 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Chatting Application-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		71A944C57E9E2010072CBB50 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chatting Application/Pods-Chatting Application-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chatting Application/Pods-Chatting Application-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatting Application/Pods-Chatting Application-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		134B7B262503CA980015DB74 /* Sources */ = {
@@ -354,6 +427,7 @@
 		};
 		134B7B3F2503CA9B0015DB74 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BB14928315739C4BC022A38 /* Pods-Chatting Application.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -365,7 +439,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sagarBaloch.Chatting-Application";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Messenger;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -373,6 +447,7 @@
 		};
 		134B7B402503CA9B0015DB74 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BDE1B43EB1D9B816E67C2CA7 /* Pods-Chatting Application.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -384,7 +459,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sagarBaloch.Chatting-Application";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Messenger;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
