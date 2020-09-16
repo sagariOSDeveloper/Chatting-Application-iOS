@@ -51,20 +51,36 @@ class RegisterViewController: UIViewController {
             !lastName.isEmpty,
             pass.count >= 6
             else {
-            alertUserLoginError()
-            return
+                alertUserLoginError()
+                return
         }
-        //        Firebase Login
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: pass, completion: {(success,error) in
-            guard let result = success, error == nil else {
+        
+        DatabaseManager.shared.userExist(with: email) {[weak self] (exist) in
+            
+            guard let strongSelf = self else {
                 return
             }
-            print("Account Created: \(result.user)")
-        })
+            
+            guard !exist else{
+                //User Already Exist
+                strongSelf.alertUserLoginError(message: "A user Account for that email already exists.")
+                return
+            }
+            //        Firebase Register
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: pass, completion: {(authResult,error) in
+                
+                guard authResult != nil, error == nil else {
+                    return
+                }
+                
+                DatabaseManager.shared.insertUser(with: ChatAppUser(emailAddress: email, firstName: firstName, lastName: lastName))
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            })
+        }
     }
     
-    func alertUserLoginError(){
-        let alert = UIAlertController(title: "Woops", message: "Please enter all information to create a new account.", preferredStyle: .alert)
+    func alertUserLoginError(message: String = "Please enter all information to create a new account."){
+        let alert = UIAlertController(title: "Woops", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(alert,animated: true)
     }
@@ -174,7 +190,7 @@ class RegisterViewController: UIViewController {
         let b = UIButton()
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        b.setTitle("Login", for: .normal)
+        b.setTitle("Register", for: .normal)
         b.setTitleColor(.red, for: .normal)
         b.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
         b.backgroundColor = .white
@@ -189,7 +205,7 @@ class RegisterViewController: UIViewController {
     fileprivate lazy var profilePic: UIImageView = {
         var i = UIImageView()
         i.translatesAutoresizingMaskIntoConstraints = false
-        i.image = UIImage(systemName: "person")
+        i.image = UIImage(systemName: "person.circle")
         i.tintColor = .red
         i.isUserInteractionEnabled = true
         i.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeProfilePic)))
@@ -202,7 +218,7 @@ class RegisterViewController: UIViewController {
 }
 
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-   
+    
     func presentPhotoActionSheet(){
         let actionSheet = UIAlertController(title: "Profile Picture", message: "How would you like to select a profile picture.", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
