@@ -5,8 +5,21 @@ target 'Chatting Application' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Chatting Application
+# Firebase
     pod 'Firebase/Core'
     pod 'Firebase/Auth'
     pod 'Firebase/Database'
+    pod 'Firebase/Storage'
+
+# Facebook
+    pod 'FBSDKLoginKit'
+
+# Google Sign In
+    pod 'GoogleSignIn'
+
+pod 'MessageKit'
+pod 'JGProgressHUD'
+pod 'RealmSwift'
+pod 'SDWebImage'
+    
 end

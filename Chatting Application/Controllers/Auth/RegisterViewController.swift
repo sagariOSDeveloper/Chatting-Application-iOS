@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import JGProgressHUD
 
 class RegisterViewController: UIViewController {
     
@@ -25,9 +26,9 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func didTapRegister(){
-        let vc = RegisterViewController()
-        vc.title = "Create Account"
-        navigationController?.pushViewController(vc, animated: true)
+        //        let vc = RegisterViewController()
+        //        vc.title = "Create Account"
+        //        navigationController?.pushViewController(vc, animated: true)
     }
     
     
@@ -37,24 +38,26 @@ class RegisterViewController: UIViewController {
     }
     
     @objc func registerButtonTapped(){
+        //        spinner.show(in: view)
         emailTextField?.resignFirstResponder()
         passwordTextField?.resignFirstResponder()
         firstNameTextField?.resignFirstResponder()
         lastNameTextField?.resignFirstResponder()
         guard let email = emailTextField!.text,
-            let pass = passwordTextField!.text ,
-            let firstName = firstNameTextField!.text,
-            let lastName = lastNameTextField!.text,
-            !email.isEmpty,
-            !pass.isEmpty,
-            !firstName.isEmpty,
-            !lastName.isEmpty,
-            pass.count >= 6
-            else {
-                alertUserLoginError()
-                return
+              let pass = passwordTextField!.text ,
+              let firstName = firstNameTextField!.text,
+              let lastName = lastNameTextField!.text,
+              !email.isEmpty,
+              !pass.isEmpty,
+              !firstName.isEmpty,
+              !lastName.isEmpty,
+              pass.count >= 6
+        else {
+            alertUserLoginError()
+            return
         }
         
+        CircularLoadingView.showLoading()
         DatabaseManager.shared.userExist(with: email) {[weak self] (exist) in
             
             guard let strongSelf = self else {
@@ -63,17 +66,42 @@ class RegisterViewController: UIViewController {
             
             guard !exist else{
                 //User Already Exist
+                //                strongSelf.spinner.dismiss()
+                CircularLoadingView.hideLoading()
                 strongSelf.alertUserLoginError(message: "A user Account for that email already exists.")
                 return
             }
-            //        Firebase Register
+            
+            //Firebase Register
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: pass, completion: {(authResult,error) in
                 
                 guard authResult != nil, error == nil else {
                     return
                 }
                 
-                DatabaseManager.shared.insertUser(with: ChatAppUser(emailAddress: email, firstName: firstName, lastName: lastName))
+                
+                //                strongSelf.spinner.dismiss()
+                let chatUser = ChatAppUser(emailAddress: email, firstName: firstName, lastName: lastName)
+                DatabaseManager.shared.insertUser(with: chatUser) { (success) in
+                    if success {
+                        //Upload picture
+                        
+                        guard let image = strongSelf.profilePic.image, let data = image.pngData() else {
+                            return
+                        }
+                        let fileName = chatUser.profilePictureFileName
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { (result) in
+                            switch result{
+                            case .success(let downloadURL):
+                                UserDefaults.standard.set(downloadURL,forKey: "profile_picture_url")
+                                print("Download URL: \(downloadURL)")
+                            case .failure(let error):
+                                print("Storage Manager Error \(error)")
+                            }
+                        }
+                    }
+                }
+                CircularLoadingView.hideLoading()
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             })
         }

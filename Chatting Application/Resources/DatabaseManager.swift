@@ -15,6 +15,11 @@ final class DatabaseManager {
     static let shared = DatabaseManager()
     private let database = Database.database().reference()
     
+    static func safeEmail(emailAddress: String)->String{
+        var safe = emailAddress.replacingOccurrences(of: ".", with: "-")
+        safe = safe.replacingOccurrences(of: "@", with: "-")
+        return safe
+    }
 }
 
 //MARK: - Account Management
@@ -36,11 +41,18 @@ extension DatabaseManager {
     
     
     // Inserts new user in Database
-    public func insertUser(with user: ChatAppUser){
+    public func insertUser(with user: ChatAppUser, completion: @escaping (Bool)->Void){
         database.child(user.safeEmail).setValue([
             "first_name": user.firstName,
             "last_name": user.lastName
-        ])
+        ]) { (error, _) in
+            guard error == nil else {
+                print("Failed to save data to firebase")
+                completion(false)
+                return
+            }
+            completion(true)
+        }
     }
     
 }
@@ -56,6 +68,9 @@ struct ChatAppUser {
         safe = safe.replacingOccurrences(of: "@", with: "-")
         return safe
     }
-    //    let profilePhotoURL: String
+    
+    var profilePictureFileName: String {
+        return "\(safeEmail)_profile_picture.png"
+    }
     
 }

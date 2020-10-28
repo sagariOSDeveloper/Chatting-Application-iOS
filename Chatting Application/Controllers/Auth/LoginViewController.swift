@@ -9,18 +9,37 @@
 
 import UIKit
 import FirebaseAuth
+import FBSDKLoginKit
+import GoogleSignIn
+import JGProgressHUD
 
 class LoginViewController: UIViewController {
     
     var emailTextField: UITextField?
     var passwordTextField: UITextField?
+    private var loginObserver: NSObjectProtocol?
+    let loadingView = CircularLoadingView.loadingView
+    //    private let spinner = JGProgressHUD(style: .dark)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name("didLoginNotification"), object: nil, queue: .main) {[weak self] (_) in
+            guard let strongSelf = self else{
+                return
+            }
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        }
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         self.title = "Log In"
         view.backgroundColor = .white
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
         setupView()
+    }
+    
+    deinit {
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     @objc func didTapRegister(){
@@ -30,22 +49,31 @@ class LoginViewController: UIViewController {
     }
     
     @objc func logginButtonTapped(){
+        //        spinner.show(in: view)
         emailTextField?.resignFirstResponder()
         passwordTextField?.resignFirstResponder()
         guard let email = emailTextField!.text, let pass = passwordTextField!.text , !email.isEmpty, !pass.isEmpty, pass.count >= 6 else {
             alertUserLoginError()
+            DispatchQueue.main.async {
+            }
             return
         }
+        CircularLoadingView.showLoading()
         
-//        Firebase Login
+        //        Firebase Login
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: pass, completion: {[weak self] (sucess, error) in
             guard let strongSelf = self else {
                 return
+            }
+            DispatchQueue.main.async {
+                CircularLoadingView.hideLoading()
             }
             
             guard let result = sucess, error == nil else {
                 return
             }
+            UserDefaults.standard.set(email,forKey: "email")
+            
             print("Logged In: \(result.user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil )
         })
@@ -72,7 +100,7 @@ class LoginViewController: UIViewController {
         appIcon.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
         appIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         appIcon.heightAnchor.constraint(equalTo: view.widthAnchor,multiplier: 0.25).isActive = true
-
+        
         let emailField = getTextField(placeHolder: "Email Address...", secureEntry: false)
         view.addSubview(emailField)
         emailField.topAnchor.constraint(equalTo: appIcon.bottomAnchor,constant: 50).isActive = true
@@ -84,11 +112,21 @@ class LoginViewController: UIViewController {
         passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor,constant: 20).isActive = true
         passwordField.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 30).isActive = true
         passwordField.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -30).isActive = true
-
+        
         view.addSubview(loginButton)
         loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor,constant: 30).isActive = true
         loginButton.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 30).isActive = true
         loginButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -30).isActive = true
+        
+        view.addSubview(facebookLoginButton)
+        facebookLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor,constant: 30).isActive = true
+        facebookLoginButton.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 30).isActive = true
+        facebookLoginButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -30).isActive = true
+        
+        view.addSubview(googleLoginButton)
+        googleLoginButton.topAnchor.constraint(equalTo: facebookLoginButton.bottomAnchor,constant: 30).isActive = true
+        googleLoginButton.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 30).isActive = true
+        googleLoginButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -30).isActive = true
         
         emailTextField = (emailField.subviews[0] as! UITextField)
         passwordTextField = (passwordField.subviews[0] as! UITextField)
@@ -159,10 +197,29 @@ class LoginViewController: UIViewController {
         i.contentMode = .scaleAspectFit
         return i
     }()
+    
+    fileprivate lazy var facebookLoginButton: FBLoginButton = {
+        let fb = FBLoginButton()
+        fb.translatesAutoresizingMaskIntoConstraints = false
+        fb.delegate = self
+        fb.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        fb.clipsToBounds = true
+        fb.layer.cornerRadius = 10
+        fb.permissions = ["email,public_profile"]
+        return fb
+    }()
+    
+    fileprivate lazy var googleLoginButton: GIDSignInButton = {
+        let gb = GIDSignInButton()
+        gb.translatesAutoresizingMaskIntoConstraints = false
+        return gb
+    }()
 }
 
 
-extension LoginViewController: UITextFieldDelegate {
+extension LoginViewController: UITextFieldDelegate, LoginButtonDelegate{
+    //MARK: - TextField Delegate
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
             passwordTextField?.becomeFirstResponder()
@@ -171,4 +228,92 @@ extension LoginViewController: UITextFieldDelegate {
         }
         return true
     }
+    
+    //MARK: - Facebook Login Button Delegate
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let token = result?.token?.tokenString else {
+            print("User Failed to login with Facebook")
+            return
+        }
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, first_name, last_name, picture.type(large)"], tokenString: token, version: nil, httpMethod: .get)
+        
+        facebookRequest.start { (_, result, err) in
+            guard let result = result as? [String: Any], err == nil else {
+                print("Failed to make facebook graph request")
+                return
+            }
+            print("Result: \(result)")
+            
+            //            return
+            
+            guard let firstName = result["first_name"] as? String,
+                  let lastName = result["last_name"] as? String,
+                  let email = result["email"] as? String,
+                  let picture = result["picture"] as? [String:Any],
+                  let data = picture["data"] as? [String:Any],
+                  let pictureURL = data["url"] as? String else {
+                print("Failed to get email and name from FB Result")
+                return
+            }
+            UserDefaults.standard.set(email,forKey: "email")
+            
+            DatabaseManager.shared.userExist(with: email) { (exists ) in
+                if !exists {
+                    let chatUser = ChatAppUser(emailAddress: email, firstName: firstName, lastName: lastName)
+                    DatabaseManager.shared.insertUser(with: chatUser) { (success) in
+                        if success {
+                            guard let url = URL(string: pictureURL) else {
+                                return
+                            }
+                            
+                            print("Downloading data from facebook")
+                            
+                            URLSession.shared.dataTask(with: url) { (data, _, _) in
+                                guard let data = data else {
+                                    print("Failed to Downloading data from facebook")
+                                    return
+                                }
+                                
+                                print("Got Data, Uploading...")
+                                //Upload picture
+                                let fileName = chatUser.profilePictureFileName
+                                StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { (result) in
+                                    switch result{
+                                    case .success(let downloadURL):
+                                        UserDefaults.standard.set(downloadURL,forKey: "profile_picture_url")
+                                        print("Download URL: \(downloadURL)")
+                                    case .failure(let error):
+                                        print("Storage Manager Error \(error)")
+                                    }
+                                }
+                            }.resume()
+                        }
+                    }
+                }
+            }
+            
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential) {[weak self] (authResult, error) in
+                guard let strongSelf = self else{
+                    return
+                }
+                guard authResult != nil, error == nil else{
+                    if let err = error {
+                        print("Failed to Login\(err)")
+                    }
+                    return
+                }
+                print("Login Success...!")
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        print("Log out")
+    }
 }
+
+

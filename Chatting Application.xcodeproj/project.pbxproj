@@ -21,6 +21,9 @@
 		134B7B4E2503CDA90015DB74 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B4D2503CDA90015DB74 /* PhotoViewerViewController.swift */; };
 		134B7B502503CDB40015DB74 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B4F2503CDB40015DB74 /* VideoPlayerViewController.swift */; };
 		134B7B522503CDBD0015DB74 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */; };
+		1350CA8C2548ADAD00FDC9E5 /* CircularLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */; };
+		137BB5002549ADE300C74218 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137BB4FF2549ADE300C74218 /* ChatViewController.swift */; };
+		13EBC70C2549BE9100F65EF4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EBC70B2549BE9100F65EF4 /* StorageManager.swift */; };
 		AB0337537B90CF1D702E53C6 /* Pods_Chatting_Application.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 014E8178C86CDEB34FE73363 /* Pods_Chatting_Application.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +45,9 @@
 		134B7B4D2503CDA90015DB74 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		134B7B4F2503CDB40015DB74 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
+		1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoadingView.swift; sourceTree = "<group>"; };
+		137BB4FF2549ADE300C74218 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		13EBC70B2549BE9100F65EF4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		5BB14928315739C4BC022A38 /* Pods-Chatting Application.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatting Application.debug.xcconfig"; path = "Target Support Files/Pods-Chatting Application/Pods-Chatting Application.debug.xcconfig"; sourceTree = "<group>"; };
 		BDE1B43EB1D9B816E67C2CA7 /* Pods-Chatting Application.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatting Application.release.xcconfig"; path = "Target Support Files/Pods-Chatting Application/Pods-Chatting Application.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				134B7B2C2503CA980015DB74 /* Chatting Application */,
-				134B7B2B2503CA980015DB74 /* Products */,
 				404488D4C3876A5556AE41E5 /* Pods */,
 				361C85C024B31A878ED733A2 /* Frameworks */,
 			);
@@ -83,6 +88,7 @@
 				134B7B2A2503CA980015DB74 /* Messenger.app */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		134B7B2C2503CA980015DB74 /* Chatting Application */ = {
@@ -94,7 +100,9 @@
 				134B7B422503CB7C0015DB74 /* ViewModels */,
 				134B7B412503CB760015DB74 /* Models */,
 				134B7B442503CB970015DB74 /* Controllers */,
+				1350CA8A2548AD4B00FDC9E5 /* GeneralUI */,
 				134B7B3B2503CA9B0015DB74 /* Info.plist */,
+				134B7B2B2503CA980015DB74 /* Products */,
 			);
 			path = "Chatting Application";
 			sourceTree = "<group>";
@@ -131,6 +139,7 @@
 				134B7B4D2503CDA90015DB74 /* PhotoViewerViewController.swift */,
 				134B7B4F2503CDB40015DB74 /* VideoPlayerViewController.swift */,
 				134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */,
+				137BB4FF2549ADE300C74218 /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -141,6 +150,7 @@
 				134B7B2D2503CA980015DB74 /* AppDelegate.swift */,
 				134B7B2F2503CA980015DB74 /* SceneDelegate.swift */,
 				134804E22512793B00B22417 /* DatabaseManager.swift */,
+				13EBC70B2549BE9100F65EF4 /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -152,6 +162,14 @@
 				134B7B382503CA9B0015DB74 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		1350CA8A2548AD4B00FDC9E5 /* GeneralUI */ = {
+			isa = PBXGroup;
+			children = (
+				1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */,
+			);
+			path = GeneralUI;
 			sourceTree = "<group>";
 		};
 		361C85C024B31A878ED733A2 /* Frameworks */ = {
@@ -183,6 +201,7 @@
 				134B7B272503CA980015DB74 /* Frameworks */,
 				134B7B282503CA980015DB74 /* Resources */,
 				71A944C57E9E2010072CBB50 /* [CP] Embed Pods Frameworks */,
+				6CF013097237273E92B264CD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -263,6 +282,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6CF013097237273E92B264CD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chatting Application/Pods-Chatting Application-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chatting Application/Pods-Chatting Application-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatting Application/Pods-Chatting Application-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		71A944C57E9E2010072CBB50 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -294,9 +330,12 @@
 				134B7B4E2503CDA90015DB74 /* PhotoViewerViewController.swift in Sources */,
 				134B7B4C2503CD9C0015DB74 /* RegisterViewController.swift in Sources */,
 				134B7B502503CDB40015DB74 /* VideoPlayerViewController.swift in Sources */,
+				1350CA8C2548ADAD00FDC9E5 /* CircularLoadingView.swift in Sources */,
 				134B7B522503CDBD0015DB74 /* NewConversationViewController.swift in Sources */,
 				134B7B4A2503CD930015DB74 /* LoginViewController.swift in Sources */,
+				137BB5002549ADE300C74218 /* ChatViewController.swift in Sources */,
 				134B7B302503CA980015DB74 /* SceneDelegate.swift in Sources */,
+				13EBC70C2549BE9100F65EF4 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
