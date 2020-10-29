@@ -39,15 +39,6 @@ class CircularLoadingView: UIView {
         
     }
     
-    fileprivate lazy var loadingText: UILabel = {
-        let l = UILabel()
-        l.text = ""
-//        l.font = UIFont(name: Constants.boldFont, size: 20)
-//        l.textColor = Theme.gradientColor1
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
-    }()
-    
     fileprivate lazy var background:UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -68,10 +59,6 @@ class CircularLoadingView: UIView {
         rotatingCirclesView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         rotatingCirclesView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         rotatingCirclesView.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        self.addSubview(loadingText)
-        loadingText.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        loadingText.topAnchor.constraint(equalTo: self.rotatingCirclesView.bottomAnchor).isActive = true
     }
     
     static func hideLoading(){
@@ -123,7 +110,7 @@ class RotatingCirclesView: UIView {
         circle1.layer.zPosition = 2
         
         circle2.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
-        circle1.alpha = 0.8
+        circle2.alpha = 0.8
         circle2.layer.cornerRadius = circle2.frame.width/2
         circle2.layer.zPosition = 1
         

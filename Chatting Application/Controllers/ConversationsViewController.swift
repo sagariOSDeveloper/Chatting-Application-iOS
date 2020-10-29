@@ -12,8 +12,8 @@ import JGProgressHUD
 
 class ConversationsViewController: UIViewController {
     
-//    private let spinner = JGProgressHUD(style: .dark)
-        
+    //    private let spinner = JGProgressHUD(style: .dark)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
@@ -66,8 +66,25 @@ class ConversationsViewController: UIViewController {
     
     @objc fileprivate func didTapComposeButton(){
         let vc = NewConversationViewController()
+        vc.completion = { [weak self] result in
+            print("Result in TapCompse: \(result)")
+            self?.createNuewConverstaion(result: result)
+        }
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
+    }
+    
+    fileprivate func createNuewConverstaion(result: [String:String]){
+        guard let name = result["name"],
+              let email = result["email"] else {
+            return
+        }
+        
+        let vc = ChatViewController(with: email)
+        vc.title = name
+        vc.isNewConversation = true
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     fileprivate func validateAuth(){
@@ -100,7 +117,7 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = ChatViewController()
+        let vc = ChatViewController(with: "sda@.com")
         vc.title = "Baby Girl"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
