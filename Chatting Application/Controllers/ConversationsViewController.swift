@@ -81,17 +81,15 @@ class ConversationsViewController: UIViewController {
         let vc = NewConversationViewController()
         vc.completion = { [weak self] result in
             print("Result in TapCompse: \(result)")
-            self?.createNuewConverstaion(result: result)
+            self?.createNewConverstaion(result: result)
         }
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
     }
     
-    fileprivate func createNuewConverstaion(result: [String:String]){
-        guard let name = result["name"],
-              let email = result["email"] else {
-            return
-        }
+    fileprivate func createNewConverstaion(result: SearchResult){
+        let name = result.name
+        let email = result.email
         
         let vc = ChatViewController(with: email, id: nil)
         vc.title = name

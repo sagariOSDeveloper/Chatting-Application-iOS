@@ -292,7 +292,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 }
             }
         }else if let videoURL = info[.mediaURL] as? URL {
-            let fileName = "photo_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".mov"
+            let fileName = "videol_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".mov"
             //Upload Video
             StorageManager.shared.uploadMessageVideo(with: videoURL, fileName: fileName) {[weak self] (result) in
                 guard let strongSelf = self else {return}

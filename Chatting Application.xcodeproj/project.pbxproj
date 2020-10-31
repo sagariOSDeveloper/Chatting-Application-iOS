@@ -24,6 +24,7 @@
 		134B7B522503CDBD0015DB74 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */; };
 		1350CA8C2548ADAD00FDC9E5 /* CircularLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */; };
 		137BB5002549ADE300C74218 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137BB4FF2549ADE300C74218 /* ChatViewController.swift */; };
+		13E3834C254DF42B00C00606 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E3834B254DF42B00C00606 /* NewConversationCell.swift */; };
 		13EBC70C2549BE9100F65EF4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EBC70B2549BE9100F65EF4 /* StorageManager.swift */; };
 		AB0337537B90CF1D702E53C6 /* Pods_Chatting_Application.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 014E8178C86CDEB34FE73363 /* Pods_Chatting_Application.framework */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoadingView.swift; sourceTree = "<group>"; };
 		137BB4FF2549ADE300C74218 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		13E3834B254DF42B00C00606 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		13EBC70B2549BE9100F65EF4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		5BB14928315739C4BC022A38 /* Pods-Chatting Application.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatting Application.debug.xcconfig"; path = "Target Support Files/Pods-Chatting Application/Pods-Chatting Application.debug.xcconfig"; sourceTree = "<group>"; };
 		BDE1B43EB1D9B816E67C2CA7 /* Pods-Chatting Application.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatting Application.release.xcconfig"; path = "Target Support Files/Pods-Chatting Application/Pods-Chatting Application.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				134B7B362503CA9B0015DB74 /* Assets.xcassets */,
 				134B7B462503CBD70015DB74 /* Storyboards */,
 				130D8BB2254C186D000433FF /* ConversationTableViewCell.swift */,
+				13E3834B254DF42B00C00606 /* NewConversationCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				134B7B322503CA980015DB74 /* ConversationsViewController.swift in Sources */,
+				13E3834C254DF42B00C00606 /* NewConversationCell.swift in Sources */,
 				134B7B2E2503CA980015DB74 /* AppDelegate.swift in Sources */,
 				134804E32512793B00B22417 /* DatabaseManager.swift in Sources */,
 				134B7B482503CD8C0015DB74 /* ProfileViewController.swift in Sources */,
