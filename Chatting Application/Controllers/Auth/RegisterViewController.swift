@@ -130,8 +130,7 @@ class RegisterViewController: UIViewController {
         profilePic.widthAnchor.constraint(equalToConstant: 100).isActive = true
         profilePic.clipsToBounds = true
         profilePic.layer.cornerRadius = 50
-        
-        
+    
         let emailField = getTextField(placeHolder: "Email Address...", secureEntry: false)
         view.addSubview(emailField)
         emailField.topAnchor.constraint(equalTo: profilePic.bottomAnchor,constant: 40).isActive = true
@@ -243,6 +242,7 @@ class RegisterViewController: UIViewController {
         i.layer.borderColor = UIColor.red.cgColor
         return i
     }()
+    
 }
 
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

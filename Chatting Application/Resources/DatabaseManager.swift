@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
+import MessageKit
 
 final class DatabaseManager {
     
@@ -366,7 +367,10 @@ extension DatabaseManager {
                 message = messageText
             case .attributedText(_):
                 break
-            case .photo(_):
+            case .photo(let mediaItem):
+                if let targetedURL = mediaItem.url?.absoluteString {
+                    message = targetedURL
+                }
                 break
             case .video(_):
                 break
@@ -403,7 +407,7 @@ extension DatabaseManager {
                 guard err == nil else{
                     return completion(false)
                 }
-                strongSelf.database.child("\(currentUserEmail)/conversations").observeSingleEvent(of: .value) { (snapshot) in
+                strongSelf.database.child("\(currentEmail)/conversations").observeSingleEvent(of: .value) { (snapshot) in
                     guard var currentUserConversations = snapshot.value as? [[String:Any]] else{
                         completion(false)
                         return
@@ -431,7 +435,7 @@ extension DatabaseManager {
                     }
                     currentUserConversations[position] = finalConversation
                     
-                    strongSelf.database.child("\(currentUserEmail)/conversations").setValue(currentUserConversations) { (error, _) in
+                    strongSelf.database.child("\(currentEmail)/conversations").setValue(currentUserConversations) { (error, _) in
                         guard error == nil else {
                             completion(false)
                             return
@@ -501,8 +505,26 @@ extension DatabaseManager {
                       let date = ChatViewController.dateFormatter.date(from: dateString) else {
                     return nil
                 }
+                
+                var kind: MessageKind?
+                if type == "photo" {
+                    guard let imageURL = URL(string: content),
+                          let placeHolderImage = UIImage(systemName: "plus")  else {
+                        return nil
+                    }
+                    let media = Media(url: imageURL, image: nil, placeholderImage: placeHolderImage, size: CGSize(width: 300, height: 300))
+                    kind = .photo(media)
+                }else{
+                    kind = .text(content)
+                }
+                
+                guard let finalKind = kind else{
+                    return nil
+                }
+
+//                if type == phot
                 let sender = Sender(senderId: senderEmail, displayName: name, photoURL: "")
-                return Message(sender: sender, messageId: messageID, sentDate: date, kind: .text(content))
+                return Message(sender: sender, messageId: messageID, sentDate: date, kind: finalKind)
             }
             completion(.success(messages))
         }
