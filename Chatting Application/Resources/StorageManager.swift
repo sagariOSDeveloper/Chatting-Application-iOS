@@ -45,13 +45,13 @@ final class StorageManager {
     
     ///Upload Picture to Firebase Storage that will be sent in a conversation message
     public func uploadMessagePhoto(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
-        storage.child("message_images/\(fileName)").putData(data,metadata: nil) { [self] (metaData, error) in
-            guard error == nil else{
+        storage.child("message_images/\(fileName)").putData(data, metadata: nil) { [weak self] (metaData, error) in
+            guard error == nil else {
                 print("Failed to upload data")
                 completion(.failure(StorageErrors.failedToUpload))
                 return
             }
-            self.storage.child("message_images/\(fileName)").downloadURL { (url, error) in
+            self?.storage.child("message_images/\(fileName)").downloadURL { (url, error) in
                 guard let url = url else{
                     print("failedToGetDownloadURL")
                     completion(.failure(StorageErrors.failedToGetDownloadURL))
@@ -64,6 +64,29 @@ final class StorageManager {
             }
         }
     }
+
+    ///Upload Video to Firebase Storage that will be sent in a conversation message
+    public func uploadMessageVideo(with fileURL: URL, fileName: String, completion: @escaping UploadPictureCompletion) {
+        storage.child("message_videos/\(fileName)").putFile(from: fileURL, metadata: nil) { [weak self] (metaData, error) in
+            guard error == nil else{
+                print("Failed to upload video")
+                completion(.failure(StorageErrors.failedToUpload))
+                return
+            }
+            self?.storage.child("message_videos/\(fileName)").downloadURL { (url, error) in
+                guard let url = url else{
+                    print("failedToGetDownloadURL")
+                    completion(.failure(StorageErrors.failedToGetDownloadURL))
+                    return
+                }
+                
+                let urlString = url.absoluteString
+                print("Download URL Returned: \(urlString)")
+                completion(.success(urlString))
+            }
+        }
+    }
+
     
     public func downloadURL(with path: String, completion: @escaping (Result<URL ,Error>)->Void) {
         let refernce = storage.child(path)
