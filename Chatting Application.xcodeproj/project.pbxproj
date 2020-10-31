@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		130D8BB3254C186D000433FF /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130D8BB2254C186D000433FF /* ConversationTableViewCell.swift */; };
 		131C4BEA25057919003F0066 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 131C4BE925057919003F0066 /* GoogleService-Info.plist */; };
 		134804E32512793B00B22417 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134804E22512793B00B22417 /* DatabaseManager.swift */; };
 		134B7B2E2503CA980015DB74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B2D2503CA980015DB74 /* AppDelegate.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		014E8178C86CDEB34FE73363 /* Pods_Chatting_Application.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatting_Application.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		130D8BB2254C186D000433FF /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		131C4BE925057919003F0066 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		134804E22512793B00B22417 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		134B7B2A2503CA980015DB74 /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +128,7 @@
 			children = (
 				134B7B362503CA9B0015DB74 /* Assets.xcassets */,
 				134B7B462503CBD70015DB74 /* Storyboards */,
+				130D8BB2254C186D000433FF /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				1350CA8C2548ADAD00FDC9E5 /* CircularLoadingView.swift in Sources */,
 				134B7B522503CDBD0015DB74 /* NewConversationViewController.swift in Sources */,
 				134B7B4A2503CD930015DB74 /* LoginViewController.swift in Sources */,
+				130D8BB3254C186D000433FF /* ConversationTableViewCell.swift in Sources */,
 				137BB5002549ADE300C74218 /* ChatViewController.swift in Sources */,
 				134B7B302503CA980015DB74 /* SceneDelegate.swift in Sources */,
 				13EBC70C2549BE9100F65EF4 /* StorageManager.swift in Sources */,
