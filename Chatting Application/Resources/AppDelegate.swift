@@ -114,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 return
             }
             print("Successfully Signed In with Google")
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didLoginNotification"), object: nil)
+            NotificationCenter.default.post(name: .didLogInNotification, object: nil)
         }
     }
     

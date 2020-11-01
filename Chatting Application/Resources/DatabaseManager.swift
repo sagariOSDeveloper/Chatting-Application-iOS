@@ -535,12 +535,45 @@ extension DatabaseManager {
                 guard let finalKind = kind else{
                     return nil
                 }
-
-//                if type == phot
+                
+                //                if type == phot
                 let sender = Sender(senderId: senderEmail, displayName: name, photoURL: "")
                 return Message(sender: sender, messageId: messageID, sentDate: date, kind: finalKind)
             }
             completion(.success(messages))
+        }
+    }
+    
+    public func deleteConversation(converdsationId: String, completion: @escaping (Bool)->Void){
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        print("Deleted Converssation with id: \(converdsationId)")
+        // Get All Conversations For Current User
+        // Delete Conversation in Collection with Target ID
+        // Reset those conversations for the user in database
+        let ref = database.child("\(safeEmail)/conversations")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if var conversations = snapshot.value as? [[String:Any]] {
+                var positionToRemove = 0
+                for conversation in conversations {
+                    if let id = conversation["id"] as? String,
+                       id == converdsationId {
+                        print("Found Convo to Delete")
+                        break
+                    }
+                    positionToRemove += 1
+                }
+                conversations.remove(at: positionToRemove)
+                ref.setValue(conversations) { (error, _) in
+                    guard error == nil else {
+                        print("Error in deleting from database")
+                        completion(false)
+                        return
+                    }
+                    print("Deleted Converssation")
+                    completion(true)
+                }
+            }
         }
     }
 }

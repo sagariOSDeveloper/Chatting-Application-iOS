@@ -47,12 +47,20 @@ class ConversationsViewController: UIViewController {
         return table
     }()
     
+    public var loginObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
         setupView()
         fetchConversations()
         startListeningForConversations()
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main) {[weak self] (_) in
+            guard let strongSelf = self else{
+                return
+            }
+            strongSelf.startListeningForConversations()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,13 +115,19 @@ class ConversationsViewController: UIViewController {
         }
     }
     
-    fileprivate func fetchConversations(){
+    private func fetchConversations(){
         //Fetch Conversations from Firestore
         conversationTableView.isHidden = false
     }
     
-    fileprivate func startListeningForConversations(){
+    private func startListeningForConversations(){
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        print("started Listening")
+        if let observer = loginObserver {
+            print("Removing Observer")
+            NotificationCenter.default.removeObserver(observer)
+        }
+        
         print("Starting Fetching Conversations...")
         let safeEmail = DatabaseManager.safeEmail(emailAddress: currentEmail)
         DatabaseManager.shared.getAllConversations(for: safeEmail) {[weak self] (result) in
@@ -142,8 +156,6 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = conversations[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: ConversationTableViewCell.identifier, for: indexPath) as! ConversationTableViewCell
-//        cell.textLabel!.text = "Hello World"
-//        cell.accessoryType = .disclosureIndicator
         cell.configure(with: model)
         return cell
     }
@@ -159,5 +171,27 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            let conversationId = conversations[indexPath.row].id
+            tableView.beginUpdates()
+            DatabaseManager.shared.deleteConversation(converdsationId: conversationId) {[weak self] (success) in
+                if success{
+                    print("Finally Deleted")
+                    self?.conversations.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .left)
+                }else{
+                    print("Finally Not Deleted")
+                }
+            }
+            tableView.endUpdates()
+        }
     }
 }

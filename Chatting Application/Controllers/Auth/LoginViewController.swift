@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name("didLoginNotification"), object: nil, queue: .main) {[weak self] (_) in
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main) {[weak self] (_) in
             guard let strongSelf = self else{
                 return
             }
@@ -54,8 +54,6 @@ class LoginViewController: UIViewController {
         passwordTextField?.resignFirstResponder()
         guard let email = emailTextField!.text, let pass = passwordTextField!.text , !email.isEmpty, !pass.isEmpty, pass.count >= 6 else {
             alertUserLoginError()
-            DispatchQueue.main.async {
-            }
             return
         }
         CircularLoadingView.showLoading()
@@ -81,6 +79,7 @@ class LoginViewController: UIViewController {
                           let firstName = userData["first_name"] as? String,
                           let lastName = userData["last_name"] as? String else { return }
                     UserDefaults.standard.set("\(firstName) \(lastName)",forKey: "name")
+                    NotificationCenter.default.post(name: .didLogInNotification, object: nil)
                 case.failure(let error):
                     print("Failed to get the data: \(error)")
                 }
