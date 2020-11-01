@@ -88,8 +88,21 @@ class ConversationsViewController: UIViewController {
     @objc fileprivate func didTapComposeButton(){
         let vc = NewConversationViewController()
         vc.completion = { [weak self] result in
+            guard let strongSelf = self else { return }
+            let currentConversations = strongSelf.conversations
+            
+            if let targetConversation = currentConversations.first(where: {
+                $0.otherUserEmail == DatabaseManager.safeEmail(emailAddress: result.email)
+            }) {
+                let vc = ChatViewController(with: targetConversation.otherUserEmail, id: targetConversation.id)
+                vc.title = targetConversation.name
+                vc.isNewConversation = false
+                vc.navigationItem.largeTitleDisplayMode = .never
+                strongSelf.navigationController?.pushViewController(vc, animated: true)
+            }else{
+                strongSelf.createNewConverstaion(result: result)
+            }
             print("Result in TapCompse: \(result)")
-            self?.createNewConverstaion(result: result)
         }
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
@@ -97,13 +110,27 @@ class ConversationsViewController: UIViewController {
     
     fileprivate func createNewConverstaion(result: SearchResult){
         let name = result.name
-        let email = result.email
-        
-        let vc = ChatViewController(with: email, id: nil)
-        vc.title = name
-        vc.isNewConversation = true
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        let email = DatabaseManager.safeEmail(emailAddress: result.email)
+        // Check in database if conversation exists with these two users
+        // If it does, reuse same conversation id
+        // Otherwise, use existring code
+        DatabaseManager.shared.conversationExist(with: email) {[weak self] (result) in
+            guard let strongSelf = self else { return }
+            switch result {
+            case.success(let conversationId):
+                let vc = ChatViewController(with: email, id: conversationId)
+                vc.title = name
+                vc.isNewConversation = false
+                vc.navigationItem.largeTitleDisplayMode = .never
+                strongSelf.navigationController?.pushViewController(vc, animated: true)
+            case.failure(_):
+                let vc = ChatViewController(with: email, id: nil)
+                vc.title = name
+                vc.isNewConversation = true
+                vc.navigationItem.largeTitleDisplayMode = .never
+                strongSelf.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
     
     fileprivate func validateAuth(){
@@ -163,6 +190,10 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = conversations[indexPath.row]
+        openConversation(with: model)
+    }
+    
+    func openConversation(with model: Conversation) {
         let vc = ChatViewController(with: model.otherUserEmail,id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
