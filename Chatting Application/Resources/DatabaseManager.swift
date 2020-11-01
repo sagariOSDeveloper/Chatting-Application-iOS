@@ -27,10 +27,9 @@ final class DatabaseManager {
 extension DatabaseManager {
     
     public func userExist(with email: String, completion: @escaping ((Bool)-> Void)){
-        var safe = email.replacingOccurrences(of: ".", with: "-")
-        safe = safe.replacingOccurrences(of: "@", with: "-")
+        let safe = DatabaseManager.safeEmail(emailAddress: email)
         database.child(safe).observeSingleEvent(of: .value) { (snapshot) in
-            guard snapshot.value as? String != nil else{
+            guard snapshot.value as? [String:Any] != nil else{
                 //                If not found
                 completion(false)
                 return
@@ -209,7 +208,7 @@ extension DatabaseManager {
                 if var conversations = snapshot.value as? [[String: Any]] {
                     //append
                     conversations.append(recipientNewConversationData)
-                    self?.database.child("\(otherUserEmail)/conversations").setValue(conversationID)
+                    self?.database.child("\(otherUserEmail)/conversations").setValue(conversations)
                     
                 }else{
                     // Create one

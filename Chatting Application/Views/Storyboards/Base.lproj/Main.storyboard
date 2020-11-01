@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="i1m-OY-T02">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="i1m-OY-T02">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,8 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" title="Chats" id="heP-ys-wea"/>
                 </viewController>
@@ -44,9 +46,8 @@
         <!--Profile-->
         <scene sceneID="b5V-cr-l5P">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VBc-rJ-g7w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="O3C-Nw-3tw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="Ekr-zR-XZn"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="person.circle" catalog="system" id="Ekr-zR-XZn"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="QGr-9i-0ak">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -55,6 +56,7 @@
                         <segue destination="J4y-Ft-dwl" kind="relationship" relationship="rootViewController" id="jBY-Os-zpG"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VBc-rJ-g7w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1080" y="130"/>
         </scene>
@@ -65,7 +67,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="uLg-fg-m2b">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Profile" id="F6q-BZ-xWx"/>
                     <connections>
@@ -80,7 +82,7 @@
         <scene sceneID="LHg-j3-kYH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sCQ-ad-4Wh" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chats" id="NnV-eC-l3O"/>
+                    <tabBarItem key="tabBarItem" title="Chats" image="message" catalog="system" id="NnV-eC-l3O"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="Fha-gv-sQ8">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -96,4 +98,11 @@
             <point key="canvasLocation" x="137.68115942028987" y="129.91071428571428"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="message" catalog="system" width="128" height="113"/>
+        <image name="person.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
