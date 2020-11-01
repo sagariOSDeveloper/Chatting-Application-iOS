@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
         }
         GIDSignIn.sharedInstance()?.presentingViewController = self
         self.title = "Log In"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
         setupView()
     }
