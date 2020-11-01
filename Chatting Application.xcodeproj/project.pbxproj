@@ -24,6 +24,7 @@
 		134B7B522503CDBD0015DB74 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */; };
 		1350CA8C2548ADAD00FDC9E5 /* CircularLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */; };
 		137BB5002549ADE300C74218 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137BB4FF2549ADE300C74218 /* ChatViewController.swift */; };
+		139137AC254F35FF0005212B /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139137AB254F35FF0005212B /* LocationPickerViewController.swift */; };
 		13D2CA1E254EBBD600045E02 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D2CA1D254EBBD600045E02 /* Extensions.swift */; };
 		13E3834C254DF42B00C00606 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E3834B254DF42B00C00606 /* NewConversationCell.swift */; };
 		13EBC70C2549BE9100F65EF4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EBC70B2549BE9100F65EF4 /* StorageManager.swift */; };
@@ -51,6 +52,7 @@
 		134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		1350CA8B2548ADAD00FDC9E5 /* CircularLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoadingView.swift; sourceTree = "<group>"; };
 		137BB4FF2549ADE300C74218 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		139137AB254F35FF0005212B /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
 		13D2CA1D254EBBD600045E02 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		13E3834B254DF42B00C00606 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		13EBC70B2549BE9100F65EF4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				134B7B4F2503CDB40015DB74 /* VideoPlayerViewController.swift */,
 				134B7B512503CDBD0015DB74 /* NewConversationViewController.swift */,
 				137BB4FF2549ADE300C74218 /* ChatViewController.swift */,
+				139137AB254F35FF0005212B /* LocationPickerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				134B7B322503CA980015DB74 /* ConversationsViewController.swift in Sources */,
 				13E3834C254DF42B00C00606 /* NewConversationCell.swift in Sources */,
 				134B7B2E2503CA980015DB74 /* AppDelegate.swift in Sources */,
+				139137AC254F35FF0005212B /* LocationPickerViewController.swift in Sources */,
 				134804E32512793B00B22417 /* DatabaseManager.swift in Sources */,
 				134B7B482503CD8C0015DB74 /* ProfileViewController.swift in Sources */,
 				134B7B4E2503CDA90015DB74 /* PhotoViewerViewController.swift in Sources */,

@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 import MessageKit
+import CoreLocation
 
 final class DatabaseManager {
     
@@ -376,7 +377,9 @@ extension DatabaseManager {
                     message = targetedURL
                 }
                 break
-            case .location(_):
+            case .location(let locationData):
+                let location = locationData.location
+                message = "\(location.coordinate.longitude),\(location.coordinate.latitude)"
                 break
             case .emoji(_):
                 break
@@ -394,6 +397,7 @@ extension DatabaseManager {
                 completion(false)
                 return }
             let currentUserEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+            
             let newMessageEntry: [String:Any] = [
                 "id": newMessage.messageId,
                 "type": newMessage.kind.messageKindString,
@@ -567,7 +571,16 @@ extension DatabaseManager {
                     let media = Media(url: videoURL, image: nil, placeholderImage: placeHolder, size: CGSize(width: 300, height: 300))
                     kind = .video(media)
                     
-                } else {
+                } else if type == "location" {
+                    let locationComponents = content.split(separator: ",")
+                    guard let longitude = Double(locationComponents[0]), let latitude = Double(locationComponents[1]) else {
+                        return nil
+                    }
+                    let location = Location(location: CLLocation(latitude: latitude, longitude: longitude) , size: CGSize(width: 300, height: 300))
+                    
+                    kind = .location(location)
+                }
+                else {
                     kind = .text(content)
                 }
                 

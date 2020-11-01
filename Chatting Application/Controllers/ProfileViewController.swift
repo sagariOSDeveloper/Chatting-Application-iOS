@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FBSDKLoginKit
 import GoogleSignIn
+import SDWebImage
 
 class ProfileViewController: UIViewController {
     
@@ -43,10 +44,10 @@ class ProfileViewController: UIViewController {
         imageView.layer.masksToBounds = true
         v.addSubview(imageView)
         
-        StorageManager.shared.downloadURL(with: path) { [weak self] (result) in
+        StorageManager.shared.downloadURL(with: path) { (result) in
             switch result {
             case .success(let url):
-                self?.downloadImage(imageView: imageView, url: url)
+                imageView.sd_setImage(with: url, completed: nil)
             case .failure(let error):
                 print("Failed to download URL: \(error)")
             }
@@ -54,21 +55,10 @@ class ProfileViewController: UIViewController {
         
         return v
     }
-    
-    func downloadImage(imageView: UIImageView, url: URL) {
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
-            guard let data = data, error == nil else {
-                return
-            }
-            DispatchQueue.main.async {
-                let image = UIImage(data: data)
-                imageView.image = image
-            }
-        }.resume()
-    }
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
