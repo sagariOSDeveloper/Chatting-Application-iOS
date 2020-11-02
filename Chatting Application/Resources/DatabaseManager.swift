@@ -12,10 +12,14 @@ import FirebaseDatabase
 import MessageKit
 import CoreLocation
 
+///Manager Object to Read and Write Data to Firebase Database
 final class DatabaseManager {
+    ///Shared instances of class
+    public static let shared = DatabaseManager()
     
-    static let shared = DatabaseManager()
     private let database = Database.database().reference()
+    
+    private init(){}
     
     static func safeEmail(emailAddress: String)->String{
         var safe = emailAddress.replacingOccurrences(of: ".", with: "-")
@@ -27,6 +31,10 @@ final class DatabaseManager {
 //MARK: - Account Management
 extension DatabaseManager {
     
+    ///Checks if user exists with given email
+    ///Parameters
+    /// - `email`:      Target email to be checked
+    /// - `completion`:      Async closure to return with result
     public func userExist(with email: String, completion: @escaping ((Bool)-> Void)){
         let safe = DatabaseManager.safeEmail(emailAddress: email)
         database.child(safe).observeSingleEvent(of: .value) { (snapshot) in
@@ -46,14 +54,15 @@ extension DatabaseManager {
         database.child(user.safeEmail).setValue([
             "first_name": user.firstName,
             "last_name": user.lastName
-        ]) { (error, _) in
-            guard error == nil else {
+        ]) {[weak self] (error, _) in
+            guard error == nil,
+                  let strongSelf = self  else {
                 print("Failed to save data to firebase")
                 completion(false)
                 return
             }
             
-            self.database.child("users").observeSingleEvent(of: .value) { (snapshot) in
+            strongSelf.database.child("users").observeSingleEvent(of: .value) { (snapshot) in
                 if var usersCollection = snapshot.value as? [[String:String]]{
                     //Append to user dictionary
                     usersCollection.append([
@@ -61,7 +70,7 @@ extension DatabaseManager {
                         "email": user.safeEmail
                     ])
                     
-                    self.database.child("users").setValue(usersCollection) { (error, _) in
+                    strongSelf.database.child("users").setValue(usersCollection) { (error, _) in
                         guard error == nil else{
                             completion(false)
                             return
@@ -77,7 +86,7 @@ extension DatabaseManager {
                             "email": user.safeEmail
                         ]
                     ]
-                    self.database.child("users").setValue(newCollection) { (error, _) in
+                    strongSelf.database.child("users").setValue(newCollection) { (error, _) in
                         guard error == nil else{
                             completion(false)
                             return
@@ -90,6 +99,7 @@ extension DatabaseManager {
         }
     }
     
+    ///Get all users from database
     public func getAllUsers(completion: @escaping (Result<[[String:String]],Error>)->Void){
         database.child("users").observeSingleEvent(of: .value) { (snapshot) in
             guard let value = snapshot.value as? [[String:String]] else {
@@ -102,6 +112,12 @@ extension DatabaseManager {
     
     public enum DatabaseError: Error {
         case failedToFetch
+        public var localizedDescription: String {
+            switch self {
+            case .failedToFetch:
+                return "We are unable to fetch the data from database"
+            }
+        }
     }
 }
 
@@ -630,9 +646,9 @@ extension DatabaseManager {
     }
 }
 extension DatabaseManager {
-    
+    /// Returns a Dictionary Node at child path
     public func getDataFor(path: String, completion: @escaping (Result<Any,Error>)->Void){
-        self.database.child(path).observeSingleEvent(of: .value) { (snapshot) in
+        database.child(path).observeSingleEvent(of: .value) { (snapshot) in
             guard let value = snapshot.value else{
                 completion(.failure(DatabaseError.failedToFetch))
                 return

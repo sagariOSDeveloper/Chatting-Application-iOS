@@ -12,16 +12,6 @@ import FBSDKLoginKit
 import GoogleSignIn
 import SDWebImage
 
-enum ProfileViewModelType {
-    case info,logout
-}
-
-struct ProfileViewModel {
-    let viewModelType: ProfileViewModelType
-    let title: String
-    let handler: (()->Void)?
-}
-
 class ProfileViewController: UIViewController {
     
     var data = [ProfileViewModel]()
@@ -69,7 +59,7 @@ class ProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = createTableHeader()
-        self.navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .always
     }
     
     func createTableHeader() -> UIView? {
@@ -79,7 +69,7 @@ class ProfileViewController: UIViewController {
         let fileName = safeEmail + "_profile_picture.png"
         let path = "images/" + fileName
         
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 300))
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
         v.backgroundColor = .red
         
         let imageView = UIImageView(frame: CGRect(x: (v.frame.width-150)/2, y: 75, width: 150, height: 150))
@@ -129,11 +119,11 @@ class ProfileTableViewCell: UITableViewCell {
         self.textLabel?.text = viewModel.title
         switch viewModel.viewModelType {
         case .info:
-            self.textLabel?.textAlignment = .left
-            self.selectionStyle = .none
+            textLabel?.textAlignment = .left
+            selectionStyle = .none
         case .logout:
-            self.textLabel?.textColor = .red
-            self.textLabel?.textAlignment = .center
+            textLabel?.textColor = .red
+            textLabel?.textAlignment = .center
         }
     }
 }

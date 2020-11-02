@@ -14,7 +14,7 @@ class LocationPickerViewController: UIViewController {
     
     public var completion: ((CLLocationCoordinate2D)->Void)?
     private var coordinates: CLLocationCoordinate2D?
-    private var isPickable = true
+    public var isPickable = true
     
     private let map: MKMapView = {
         let m = MKMapView()
@@ -23,7 +23,7 @@ class LocationPickerViewController: UIViewController {
     
     init(coordinates: CLLocationCoordinate2D?) {
         self.coordinates = coordinates
-        self.isPickable = false
+        isPickable = coordinates == nil
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,7 +55,7 @@ class LocationPickerViewController: UIViewController {
     
     @objc func sendButtonTapped(){
         guard let coordinates = coordinates else { return }
-        self.completion?(coordinates)
+        completion?(coordinates)
         navigationController?.popViewController(animated: true)
     }
     

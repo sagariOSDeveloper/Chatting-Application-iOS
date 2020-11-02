@@ -10,19 +10,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-struct Conversation {
-    let id: String
-    let name: String
-    let otherUserEmail: String
-    let latestMessage: LatestMessage
-}
-
-struct LatestMessage {
-    let date: String
-    let text: String
-    let isRead: Bool
-}
-
+///Controller that shows list of the conversations
 class ConversationsViewController: UIViewController {
     
     private var conversations = [Conversation]()
@@ -59,7 +47,7 @@ class ConversationsViewController: UIViewController {
             }
             strongSelf.startListeningForConversations()
         }
-        self.navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .always
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -69,7 +57,6 @@ class ConversationsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        conversationTableView.frame = self.view.bounds
         view.addSubview(noConversationLabel)
         noConversationLabel.frame = CGRect(x: 10, y: (view.frame.height-100)/2, width: view.frame.width-20, height: 100)
     }
@@ -220,12 +207,14 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
             
             let conversationId = conversations[indexPath.row].id
             tableView.beginUpdates()
+            self.conversations.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            
             DatabaseManager.shared.deleteConversation(converdsationId: conversationId) {[weak self] (success) in
                 if success{
-                    print("Finally Deleted")
-                    self?.conversations.remove(at: indexPath.row)
-                    tableView.deleteRows(at: [indexPath], with: .left)
+                    print("Finally Deleted Successfully")
                 }else{
+                    //Add again the model
                     print("Finally Not Deleted")
                 }
             }

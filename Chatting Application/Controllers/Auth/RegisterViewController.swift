@@ -19,9 +19,9 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Log In"
+        title = "Log In"
         view.backgroundColor = .systemBackground
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
         setupView()
     }
     
@@ -66,7 +66,6 @@ class RegisterViewController: UIViewController {
             
             guard !exist else{
                 //User Already Exist
-                //                strongSelf.spinner.dismiss()
                 CircularLoadingView.hideLoading()
                 strongSelf.alertUserLoginError(message: "A user Account for that email already exists.")
                 return
@@ -280,7 +279,7 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
         guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
             return
         }
-        self.profilePic.image = selectedImage
+        profilePic.image = selectedImage
         picker.dismiss(animated: true, completion: nil)
     }
     

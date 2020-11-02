@@ -48,15 +48,15 @@ class CircularLoadingView: UIView {
     }()
     
     fileprivate func setupViews(){
-        self.addSubview(background)
-        background.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        background.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        background.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        background.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        addSubview(background)
+        background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        background.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
-        self.addSubview(rotatingCirclesView)
-        rotatingCirclesView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        rotatingCirclesView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        addSubview(rotatingCirclesView)
+        rotatingCirclesView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        rotatingCirclesView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         rotatingCirclesView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         rotatingCirclesView.widthAnchor.constraint(equalToConstant: 200).isActive = true
     }
@@ -121,22 +121,22 @@ class RotatingCirclesView: UIView {
     func animate(_ circle: UIView, counter: Int){
         var counter = counter
         
-        UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear, animations: {
-            if self.position.count == 0{return}
-            circle.frame = self.position[counter]
+        UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear, animations: { [weak self] in
+            if self?.position.count == 0{return}
+            circle.frame = (self?.position[counter])!
             circle.layer.cornerRadius = circle.frame.width/2
             
             switch counter{
             case 1:
-                if circle == self.circle1{ self.circle1.layer.zPosition = 2}
+                if circle == self?.circle1{ self?.circle1.layer.zPosition = 2}
             case 3:
-                if circle == self.circle1{ self.circle1.layer.zPosition = 0}
+                if circle == self?.circle1{ self?.circle1.layer.zPosition = 0}
             default:
                 break;
             //  print()
             
             }
-        }) {[weak self] (completed) in
+        }) { [weak self] (completed) in
             
             guard let self = self else{return}
             //if counter == 0{return}

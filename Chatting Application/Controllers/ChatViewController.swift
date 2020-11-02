@@ -226,7 +226,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         let message = Message(sender: selfSender, messageId: messageId, sentDate: Date(), kind: .text(text))
         if isNewConversation {
             //Create Convo in Database
-            DatabaseManager.shared.createNewConversation(with: otherUserEmail, name: self.title ?? "User", firstMessage: message) {[weak self] (success) in
+            DatabaseManager.shared.createNewConversation(with: otherUserEmail, name: title ?? "User", firstMessage: message) {[weak self] (success) in
                 if success {
                     print("Message Sent")
                     self?.isNewConversation = false
@@ -239,7 +239,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 }
             }
         }else{
-            guard let conversationID = conversationID, let name = self.title else { return }
+            guard let conversationID = conversationID, let name = title else { return }
             //Append to existing convo data
             DatabaseManager.shared.sendMessage(to: conversationID, otherUserEmail: otherUserEmail, name: name , newMessage: message) {[weak self] (success) in
                 if success {
@@ -255,7 +255,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     private func createMessageId() -> String? {
         //data, oth
         
-        let dateString = Self.dateFormatter.string(from: Date())
+        let dateString = ChatViewController.dateFormatter.string(from: Date())
         guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else { return nil}
         let currentUserEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         
@@ -306,7 +306,7 @@ extension ChatViewController: MessagesLayoutDelegate, MessagesDataSource, Messag
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         if message.sender.senderId == selfSender?.senderId {
             //Show Our Image
-            if let currentUserImageURL = self.senderPhotoURL {
+            if let currentUserImageURL = senderPhotoURL {
                 avatarView.sd_setImage(with: currentUserImageURL, completed: nil)
             }else{
                 //images/safeEmail_profile_picture.png
@@ -328,12 +328,12 @@ extension ChatViewController: MessagesLayoutDelegate, MessagesDataSource, Messag
                 }
             }
         }else{
-            if let otherUserImageURL = self.senderPhotoURL {
+            if let otherUserImageURL = senderPhotoURL {
                 avatarView.sd_setImage(with: otherUserImageURL, completed: nil)
             }else{
                 //Fetch URL
                 //images/safeEmail_profile_picture.png
-                let email = self.otherUserEmail
+                let email = otherUserEmail
                 let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
                 let path = "images/\(safeEmail)_profile_picture.png"
                 //Fetch URL
@@ -363,7 +363,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         picker.dismiss(animated: true, completion: nil)
         guard let messageId = createMessageId(),
               let conversationId = conversationID,
-              let name = self.title,
+              let name = title,
               let selfSender = selfSender else { return }
         
         if let image = info[.editedImage] as? UIImage, let imageData = image.pngData() {
@@ -439,7 +439,7 @@ extension ChatViewController: MessageCellDelegate {
             let coordinates = locationData.location.coordinate
             let vc = LocationPickerViewController(coordinates: coordinates)
             vc.title = "Location"
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
@@ -454,7 +454,7 @@ extension ChatViewController: MessageCellDelegate {
         case .photo(let media):
             guard let imageURL = media.url else { return }
             let vc = PhotoViewerViewController(with: imageURL)
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
             
         case .video(let media):
             guard let videoURL = media.url else { return }
@@ -465,72 +465,5 @@ extension ChatViewController: MessageCellDelegate {
             break
         }
     }
-    
-}
-
-struct Message: MessageType {
-    
-    public var sender: SenderType
-    
-    public var messageId: String
-    
-    public var sentDate: Date
-    
-    public var kind: MessageKind
-    
-}
-
-struct Media: MediaItem {
-    var url: URL?
-    
-    var image: UIImage?
-    
-    var placeholderImage: UIImage
-    
-    var size: CGSize
-    
-}
-
-extension MessageKind {
-    
-    var messageKindString: String {
-        switch self {
-        case .text(_):
-            return "text"
-        case .attributedText(_):
-            return "attributedText"
-        case .photo(_):
-            return "photo"
-        case .video(_):
-            return "video"
-        case .location(_):
-            return "location"
-        case .emoji(_):
-            return "emoji"
-        case .audio(_):
-            return "audio"
-        case .contact(_):
-            return "contact"
-        case .linkPreview(_):
-            return "linkPreview"
-        case .custom(_):
-            return "custom"
-        }
-    }
-    
-}
-
-struct Location: LocationItem {
-    var location: CLLocation    
-    var size: CGSize
-}
-
-struct Sender: SenderType {
-    
-    var senderId: String
-    
-    var displayName: String
-    
-    var photoURL: String
     
 }

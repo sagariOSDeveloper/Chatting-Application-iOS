@@ -9,11 +9,13 @@
 import Foundation
 import FirebaseStorage
 
+///Allows you to get, fetch and upload files to firebase storage
 final class StorageManager {
     
     static let shared = StorageManager()
     private let storage = Storage.storage().reference()
     
+    private init(){}
     
     /*
      /images/baloch78609-gmail-com_profile_picture.png
@@ -23,13 +25,14 @@ final class StorageManager {
     
     ///Upload Picture to Firebase Storage and returns completion  with url string to download
     public func uploadProfilePicture(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
-        storage.child("images/\(fileName)").putData(data,metadata: nil) { [self] (metaData, error) in
+        storage.child("images/\(fileName)").putData(data,metadata: nil) { [weak self] (metaData, error) in
+            guard let strongSelf = self else{ return }
             guard error == nil else{
                 print("Failed to upload data")
                 completion(.failure(StorageErrors.failedToUpload))
                 return
             }
-            self.storage.child("images/\(fileName)").downloadURL { (url, error) in
+            strongSelf.storage.child("images/\(fileName)").downloadURL { (url, error) in
                 guard let url = url else{
                     print("failed To Get Download URL")
                     completion(.failure(StorageErrors.failedToGetDownloadURL))
@@ -64,7 +67,7 @@ final class StorageManager {
             }
         }
     }
-
+    
     ///Upload Video to Firebase Storage that will be sent in a conversation message
     public func uploadMessageVideo(with fileURL: URL, fileName: String, completion: @escaping UploadPictureCompletion) {
         storage.child("message_videos/\(fileName)").putFile(from: fileURL, metadata: nil) { [weak self] (metaData, error) in
@@ -86,7 +89,7 @@ final class StorageManager {
             }
         }
     }
-
+    
     
     public func downloadURL(with path: String, completion: @escaping (Result<URL ,Error>)->Void) {
         let refernce = storage.child(path)
