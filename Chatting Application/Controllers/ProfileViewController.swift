@@ -40,8 +40,11 @@ class ProfileViewController: UIViewController {
             guard let strongSelf = self else {return}
             
             let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-            actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: {[weak self] (UIAlertAction) in
+            actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (UIAlertAction) in
                 
+                
+                UserDefaults.standard.setValue(nil, forKey: "email")
+                UserDefaults.standard.setValue(nil, forKey: "name")
                 //Facebook Logout
                 FBSDKLoginKit.LoginManager().logOut()
                 
@@ -66,6 +69,7 @@ class ProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = createTableHeader()
+        self.navigationItem.largeTitleDisplayMode = .always
     }
     
     func createTableHeader() -> UIView? {

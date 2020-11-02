@@ -29,10 +29,9 @@ class ConversationsViewController: UIViewController {
     
     fileprivate lazy var noConversationLabel: UILabel = {
         let l = UILabel()
-        l.translatesAutoresizingMaskIntoConstraints = false
+//        l.translatesAutoresizingMaskIntoConstraints = false
         l.text = "No Conversations!"
         l.font = UIFont.systemFont(ofSize: 21,weight: .medium)
-        l.numberOfLines = -1
         l.textColor = .gray
         l.textAlignment = .center
         l.isHidden = true
@@ -42,7 +41,7 @@ class ConversationsViewController: UIViewController {
     fileprivate lazy var conversationTableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.isHidden = true
+        table.isHidden = false
         table.register(ConversationTableViewCell.self, forCellReuseIdentifier: ConversationTableViewCell.identifier)
         return table
     }()
@@ -53,7 +52,6 @@ class ConversationsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .red
         setupView()
-        fetchConversations()
         startListeningForConversations()
         loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main) {[weak self] (_) in
             guard let strongSelf = self else{
@@ -61,6 +59,7 @@ class ConversationsViewController: UIViewController {
             }
             strongSelf.startListeningForConversations()
         }
+        self.navigationItem.largeTitleDisplayMode = .always
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,9 +67,18 @@ class ConversationsViewController: UIViewController {
         validateAuth()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        conversationTableView.frame = self.view.bounds
+        view.addSubview(noConversationLabel)
+        noConversationLabel.frame = CGRect(x: 10, y: (view.frame.height-100)/2, width: view.frame.width-20, height: 100)
+    }
+    
     fileprivate func setupView(){
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(didTapComposeButton))
+        let rightButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(didTapComposeButton))
+        rightButton.tintColor = .white
+        navigationItem.rightBarButtonItem = rightButton
         
         conversationTableView.delegate = self
         conversationTableView.dataSource = self
@@ -79,9 +87,6 @@ class ConversationsViewController: UIViewController {
         conversationTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         conversationTableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         conversationTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        
-        view.addSubview(noConversationLabel)
-        
         
     }
     
@@ -142,11 +147,6 @@ class ConversationsViewController: UIViewController {
         }
     }
     
-    private func fetchConversations(){
-        //Fetch Conversations from Firestore
-        conversationTableView.isHidden = false
-    }
-    
     private func startListeningForConversations(){
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
         print("started Listening")
@@ -162,13 +162,20 @@ class ConversationsViewController: UIViewController {
             case .success(let conversation):
                 print("Successfully get conversation model\(conversation.count)")
                 guard !conversation.isEmpty else {
+//                    self?.view.backgroundColor = .systemBackground
+//                    self?.conversationTableView.isHidden = true
+                    self?.noConversationLabel.isHidden = false
                     return
                 }
+                self?.noConversationLabel.isHidden = true
                 self?.conversations = conversation
                 DispatchQueue.main.async {
                     self?.conversationTableView.reloadData()
                 }
             case .failure(let error):
+//                self?.view.backgroundColor = .systemBackground
+//                self?.conversationTableView.isHidden = true
+                self?.noConversationLabel.isHidden = false
                 print("failed to get conversations \(error)")
             }
         }

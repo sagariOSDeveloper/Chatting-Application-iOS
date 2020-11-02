@@ -76,11 +76,12 @@ class RegisterViewController: UIViewController {
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: pass, completion: {(authResult,error) in
                 
                 guard authResult != nil, error == nil else {
+                    print("Error Creating Account")
                     return
                 }
                 
-                
-                //                strongSelf.spinner.dismiss()
+                UserDefaults.standard.setValue(email, forKey: "email")
+                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
                 let chatUser = ChatAppUser(emailAddress: email, firstName: firstName, lastName: lastName)
                 DatabaseManager.shared.insertUser(with: chatUser) { (success) in
                     if success {
